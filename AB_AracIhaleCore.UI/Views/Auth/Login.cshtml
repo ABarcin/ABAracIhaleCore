@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using AB_AracIhaleCore.UI.Common;
+@inject IHttpContextAccessor HttpContextAccessor;
+<div class="mt-3">
+    <input id="kullaniciAdi" class="form-control" type="text"  placeholder="Kullanıcı Adı" />
+</div>
+
+<div class="mt-3">
+    <input id="sifre" class="form-control" type="text" placeholder="Şifre" />
+</div>
+
+<div class="mt-3">
+    <input id="send" type="button" class="btn btn-success col-md-12" value="Giriş Yap" onclick="Login()" />
+</div>
+
+@section Scripts{
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <script>
+        function Login() {
+
+            var myJson = {
+                UserName: $("#kullaniciAdi").val(),
+                Password: $("#sifre").val()
+            };
+
+            $.ajax({
+                url: "http://localhost:37385/api/Auth/Login",
+                dataType: "text",
+                type: "POST",
+                data: JSON.stringify(myJson),
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+                    @HttpContextAccessor.HttpContext.Session.MySessionSet
+                },
+                failure: function (data) {
+                    alert("failure");
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            });
+        }
+    </script>
+
+}

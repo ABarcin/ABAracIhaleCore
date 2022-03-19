@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using AB_AracIhaleCore.UI.Common;
+@inject IHttpContextAccessor HttpContextAccessor;
+
+@{
+    var gelenToken = "";
+
+    if (HttpContextAccessor.HttpContext.Session.MySessionGet<string>("token") == null)
+    {
+        gelenToken ="";
+    }
+    else
+    {
+        var token = HttpContextAccessor.HttpContext.Session.MySessionGet<string>("token").ToString();
+        gelenToken = "Bearer " + token;
+    }
+}
+
+@section Scripts{
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <script>
+        function IhaleEkle() {
+
+            var myJson = {
+                IhaleAdi: $("#ihaleAdi").val(),
+                CalisanID: $("#calisanID").val()
+            };
+
+            $.ajax({
+                url: "http://localhost:37385/api/Ihale/Add",
+                headers: { "Authorization": "@gelenToken" },
+                dataType: "JSON",
+                type: "POST",
+                data: JSON.stringify(myJson),
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    alert("success");
+                },
+                failure: function (data) {
+                    alert("failure");
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            });
+        }
+
+        IhaleAdi: $("#ihaleAdi").val() = "";
+        CalisanID: $("#calisanID").val() = "";</script>
+
+}
+
+
+<div class="mt-3">
+    <input id="ihaleAdi" class="form-control" type="text" value="" placeholder="İhale Adı" />
+</div>
+
+<div class="mt-3">
+    <input id="calisanID" class="form-control" type="text" value="" placeholder="Kullanici ID" />
+</div>
+
+<div class="mt-3">
+    <input id="send" type="button" class="btn btn-success col-md-12" value="Giriş Yap" onclick="IhaleEkle()" />
+</div>

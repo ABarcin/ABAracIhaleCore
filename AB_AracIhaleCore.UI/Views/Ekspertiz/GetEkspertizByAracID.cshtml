@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using AB_AracIhaleCore.UI.Common;
+@inject IHttpContextAccessor HttpContextAccessor;
+
+<div class="container">
+    <div class="d-flex flex-row-reverse">
+        <input type="button" id="tramerGetir" value="Listele" />
+        <input type="number" id="aracID" placeholder="AraçID" />
+    </div>
+    <div id="tramerTablo">
+        <table class="table table-dark col-md-12 text-center">
+            <thead>
+                <tr>
+                    <td><strong>Parça</strong></td>
+                    <td><strong>Tramer Durumu</strong></td>
+                </tr>
+            </thead>
+            <tbody id="tramerDetay">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@{
+    var token = HttpContextAccessor.HttpContext.Session.MySessionGet<string>("token").ToString();
+    var gelenToken = "Bearer " + token;
+
+}
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        $("#tramerGetir").click(function () {
+            $.ajax({
+                url: "http://localhost:37385/api/ekspertiz/" + $("#aracID").val(),
+                headers: { "Authorization": "@gelenToken" },
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                type: "get",
+                success: function (data) {
+                    $("#tramerDetay").html("");
+                    console.log(data);
+                    $.each(data, function (index, value) {
+                        var aracTramer = "<tr><td>" + value.aracParcaAdi + "</td>" + "<td>" + value.tramerDurumu + "</td> </tr>";
+                        $("#tramerDetay").append(aracTramer);
+                    });
+                },
+                error: function (data) {
+                    alert("Araç bulunamadı");
+                },
+            });
+        });
+    </script>
+}
