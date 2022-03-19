@@ -14,7 +14,7 @@ namespace AB_AracIhaleCore.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class EkspertizController : ControllerBase
     {
         IAracTramerDAL _dal;

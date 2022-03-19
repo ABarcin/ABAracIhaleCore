@@ -51,6 +51,7 @@ namespace AB_AracIhaleCore.API
                     };
                 });
             services.AddTransient<IAracTramerDAL, AracTramerDAL>();
+            services.AddTransient<IAracTramerDetayDAL, AracTramerDetayDAL>();
             services.AddTransient<IKullaniciDAL, KullaniciDAL>();
             services.AddTransient<IIhaleDAL, IhaleDAL>();
             var config = new AutoMapper.MapperConfiguration(cfg =>
