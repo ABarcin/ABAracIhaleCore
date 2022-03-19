@@ -71,7 +71,7 @@ namespace AB_AracIhaleCore.API
             }
             app.UseRouting();
             app.UseCors();
-            app.UseCors(builder => builder.WithOrigins("http://localhost:43922").AllowAnyHeader());
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
