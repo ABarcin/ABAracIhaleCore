@@ -4,10 +4,12 @@ using AB_AracIhaleCore.DAL.Concrete;
 using AB_AracIhaleCore.DAL.DAL.Abstract;
 using AB_AracIhaleCore.DAL.DAL.Concrete;
 using AB_AracIhaleCore.DAL.Mapping;
+using AB_AracIhaleCore.MODEL.Context;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,6 +30,12 @@ namespace AB_AracIhaleCore.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var server = Configuration["DBServer"] ?? ".";
+            var user = Configuration["DBUser"] ?? "sa";
+            var password = Configuration["DBPassword"] ?? "123";
+            var database = Configuration["Database"] ?? "Slytherin_AracIhale";
+            services.AddDbContext<Slytherin_AracIhaleContext>(options =>
+            options.UseSqlServer($"Server={server},Initial Catalog={database};User ID={user},Password={password}"));
             var hede = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers()
